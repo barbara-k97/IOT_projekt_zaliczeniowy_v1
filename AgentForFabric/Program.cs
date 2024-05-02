@@ -28,13 +28,7 @@ class Program
           await deviceClient.OpenAsync();
           Console.WriteLine(" !!!          Łączenie z Azure zakończone sukcesem !");
 
-          Console.WriteLine("Aeeee");
-          Console.WriteLine("Aeeee");
-          Console.WriteLine("Aeeee");
-          Console.WriteLine("Aeeee");
-          Console.WriteLine("Aeeee");
-          Console.WriteLine("Aeeee");
-          Console.WriteLine("Aeeee");
+
 
 
           Console.WriteLine("AgentForFabric zatrzymana   ");
