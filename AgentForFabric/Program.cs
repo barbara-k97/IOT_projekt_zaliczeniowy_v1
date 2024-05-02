@@ -96,11 +96,25 @@ class Program
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError"));
                          OpcValue DeviceErrors = client.ReadNode("ns=2;s=" + deviceName + "/DeviceError");
 
+                         var data = new
+                         {
+                              name = name,
+                              ProductionStatus = ProductionS,
+                              ProductionRate = ProductionRate,
+                              WorkorderId = WorkorderId,
+                              GoodCount = GoodCount.Value,
+                              BadCount = BadCount.Value,
+                              Temperature = Temperature.Value,
 
- 
+                         };
+                         Console.WriteLine(data);
+
+
+
                          Console.WriteLine("___________________");
 
-                      
+                         await device.InitializeHandlers();
+                         await device.SendTelemetry(data);
 
                     }
 
