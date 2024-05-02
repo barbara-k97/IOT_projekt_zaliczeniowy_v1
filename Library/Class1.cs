@@ -22,8 +22,15 @@ namespace Library
           }
 
 
-  
+       
 
+          public async Task InitializeHandlers()
+          {
+               
+
+               Console.WriteLine("   wywołania metody InitializeHandlers z Library ");
+
+          }
 
      }
 }

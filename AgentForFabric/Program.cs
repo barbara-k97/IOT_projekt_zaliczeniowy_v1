@@ -28,6 +28,148 @@ class Program
           await deviceClient.OpenAsync();
           Console.WriteLine(" !!!          Łączenie z Azure zakończone sukcesem !");
 
+        
+          
+          
+          // ŁĄCZENIE I POBIERANIE DANYCH Z OPC UA 
+
+
+          //  nazwa pliku json z device 
+          string jsonFilePath = Path.Combine("device_names.json");  //ścieżka do pliku 
+
+
+          // Wczytanie nazw urządzeń z pliku JSON do listy 
+          List<string> deviceFromIoTSim = ReadDeviceNamesFromJson(jsonFilePath);
+
+          // prośba o podanie ścieżki URL do serwera OPC UA 
+          // opc.tcp://localhost:4840/
+
+          Console.WriteLine("Podaj sciezke URL do serwera OPC UA  : ");
+          string adresServerOPC = Console.ReadLine() ?? string.Empty;
+
+      
+
+          using (var client = new OpcClient(adresServerOPC))
+          {
+               client.Connect();
+               Console.WriteLine("OPC UA Łączenie zakończone sukcesem !");
+
+
+
+                OpcValue ProductionStatus = client.ReadNode($"ns=2;s=Device 1/ProductionStatus");
+
+               var device = new Class1(deviceClient, client);
+
+               while ((int)ProductionStatus.Value == 0 || (int)ProductionStatus.Value == 1)
+               {
+
+                    //lista commands
+                    List<OpcReadNode> commands = new List<OpcReadNode>();
+                    Console.WriteLine("---------");
+
+
+
+
+                    // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
+                    foreach (string deviceName in deviceFromIoTSim)
+                    {
+                         OpcValue name = deviceName;
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus", OpcAttribute.DisplayName));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus"));
+                         OpcValue ProductionS = client.ReadNode("ns=2;s=" + deviceName + "/ProductionStatus");
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionRate", OpcAttribute.DisplayName));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionRate"));
+                         OpcValue ProductionRate = client.ReadNode("ns=2;s=" + deviceName + "/ProductionRate");
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/WorkorderId", OpcAttribute.DisplayName));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/WorkorderId"));
+                         OpcValue WorkorderId = client.ReadNode("ns=2;s=" + deviceName + "/WorkorderId");
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/Temperature", OpcAttribute.DisplayName));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/Temperature"));
+                         OpcValue Temperature = client.ReadNode("ns=2;s=" + deviceName + "/Temperature");
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/GoodCount", OpcAttribute.DisplayName));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/GoodCount"));
+                         OpcValue GoodCount = client.ReadNode("ns=2;s=" + deviceName + "/GoodCount");
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/BadCount", OpcAttribute.DisplayName));
+                         OpcValue BadCount = client.ReadNode("ns=2;s=" + deviceName + "/BadCount");
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/BadCount"));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError", OpcAttribute.DisplayName));
+                         commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError"));
+                         OpcValue DeviceErrors = client.ReadNode("ns=2;s=" + deviceName + "/DeviceError");
+
+
+ 
+                         Console.WriteLine("___________________");
+
+                      
+
+                    }
+
+
+                    IEnumerable<OpcValue> job = client.ReadNodes(commands.ToArray());
+
+                    // Wypisywanie 
+                    // 7 wartosci kazdy zajmuje co 2 linijki, 
+                    // co 15 linijke bedzie nowe urzadzenie 
+                    int numer = 0;
+                    int numerUrzadzenia = 0;
+                    foreach (var item in job)
+                    {
+                         if (numer % 14 == 0)
+                         {
+
+                              Console.WriteLine($" DEVICE {deviceFromIoTSim[numerUrzadzenia]}  ");
+                              numerUrzadzenia++;
+                         }
+
+
+                         // wyswietla wartosc dla urzadzenia
+                         Console.WriteLine(item.Value);
+
+                         if ((numer + 1) % 14 == 0)
+                         {
+
+                              Console.WriteLine("___________________");
+
+                         }
+
+                         numer++;
+
+                    }
+
+
+               }
+
+               client.Disconnect();
+          }
+
+
+
+
+          static List<string> ReadDeviceNamesFromJson(string filePath)
+          {
+               List<string> deviceNames = new List<string>();
+
+               try
+               {
+                    // Wczytanie zawartości pliku JSON
+                    string jsonContent = File.ReadAllText(filePath);
+                    // Deserializacja zawartości JSON do obiektu
+                    var jsonObject = JsonConvert.DeserializeObject<dynamic>(jsonContent);
+                    // Pobranie listy nazw urządzeń z obiektu JSON
+                    foreach (var deviceName in jsonObject.deviceNames)
+                    {
+                         deviceNames.Add(deviceName.ToString());
+                    }
+                    Console.WriteLine("####");
+               }
+               catch (Exception ex)
+               {
+                    Console.WriteLine($"Nie udało sie odczytać zawartości w pliku JSON: {ex.Message}");
+               }
+               return deviceNames;
+          }
+
+
 
 
 
