@@ -58,8 +58,8 @@ namespace Library
           #region D2C - Sending telemetry
           public async Task SendTelemetry(dynamic data)
           {
-               Console.WriteLine(data);
-          /*     var selectedData = new
+               //Console.WriteLine(data);
+          /*    / var selectedData = new
                {
                     DeviceName = data.name,
                     WorkorderId = data.WorkorderId,
@@ -72,17 +72,47 @@ namespace Library
                };*/
 
                var dataString = JsonConvert.SerializeObject(data);
-               Console.WriteLine(dataString);
+               //Console.WriteLine(dataString);
                Message eventMessage = new Message(Encoding.UTF8.GetBytes(dataString));
                eventMessage.ContentType = MediaTypeNames.Application.Json;
                eventMessage.ContentEncoding = "utf-8";
                await client.SendEventAsync(eventMessage);
                if (true)
-                    await Task.Delay(2000); //2000milisekund = 20sekund 
+                    await Task.Delay(20000); //20000milisekund = 20sekund 
 
 
           }
           #endregion
+
+
+          #region Device Twin
+
+
+          public async Task UpdateTwinAsync()
+          {
+               var twin = await client.GetTwinAsync();
+
+               Console.WriteLine($"\nInitial twin value received: \n{JsonConvert.SerializeObject(twin, Formatting.Indented)}");
+               Console.WriteLine();
+
+               var reportedProperties = new TwinCollection();
+               reportedProperties["DateTimeLastAppLaunch"] = DateTime.Now;
+
+               await client.UpdateReportedPropertiesAsync(reportedProperties);
+          }
+
+          private async Task OnDesiredPropertyChanged(TwinCollection desiredProperties, object userContext)
+          {
+               Console.WriteLine($"\tDesired property change:\n\t{JsonConvert.SerializeObject(desiredProperties)}");
+               Console.WriteLine("\tSending current time as reported property");
+               TwinCollection reportedProperties = new TwinCollection();
+               reportedProperties["DateTimeLastDesiredPropertyChangeReceived"] = DateTime.Now;
+
+               await client.UpdateReportedPropertiesAsync(reportedProperties).ConfigureAwait(false);
+          }
+
+          #endregion Device Twin
+
 
 
 

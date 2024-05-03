@@ -53,34 +53,39 @@ class Program
           {
                client.Connect();
                Console.WriteLine("OPC UA Łączenie zakończone sukcesem !");
-                //OpcValue ProductionStatus = client.ReadNode($"ns=2;s=Device 1/ProductionStatus");
+               OpcValue PS1 = client.ReadNode($"ns=2;s=Device 1/ProductionStatus");
+               OpcValue PS2 = client.ReadNode($"ns=2;s=Device 2/ProductionStatus");
+               OpcValue PS3 = client.ReadNode($"ns=2;s=Device 3/ProductionStatus");
 
-                    //lista commands
-                    List<OpcReadNode> commands = new List<OpcReadNode>();
+               //lista commands
+               List<OpcReadNode> commands = new List<OpcReadNode>();
+
 
                     var device = new Class1(deviceClient, client);
                     Console.WriteLine("---------");
 
+               while (deviceNames.Count  >0 )
+               {
 
 
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
                     foreach (string deviceName in deviceNames)
                     {
 
-                     
+
                          OpcValue name = deviceName;
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus"));
                          OpcValue ProductionS = client.ReadNode("ns=2;s=" + deviceName + "/ProductionStatus");
-                        
+
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionRate", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionRate"));
                          OpcValue ProductionRate = client.ReadNode("ns=2;s=" + deviceName + "/ProductionRate");
-                         
+
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/WorkorderId", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/WorkorderId"));
                          OpcValue WorkorderId = client.ReadNode("ns=2;s=" + deviceName + "/WorkorderId");
-                        
+
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/Temperature", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/Temperature"));
                          OpcValue Temperature = client.ReadNode("ns=2;s=" + deviceName + "/Temperature");
@@ -95,10 +100,10 @@ class Program
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError"));
                          OpcValue DeviceErrors = client.ReadNode("ns=2;s=" + deviceName + "/DeviceError");
-                   
-                  
 
-                    var data = new
+
+
+                         var data = new
                          {
                               name = name.Value,
                               ProductionStatus = ProductionS.Value,
@@ -114,11 +119,11 @@ class Program
 
                          Console.WriteLine("___________________");
 
-                    
-                      await device.SendTelemetry(data);
+
+                         await device.SendTelemetry(data);
 
                     }
-
+               }
 
                     IEnumerable<OpcValue> job = client.ReadNodes(commands.ToArray());
 
