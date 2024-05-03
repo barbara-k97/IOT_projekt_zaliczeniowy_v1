@@ -35,11 +35,11 @@ class Program
 
 
           //  nazwa pliku json z device 
-          string jsonFilePath = Path.Combine("device_names.json");  //ścieżka do pliku 
+           string jsonFilePath = Path.Combine("device_names.json");  //ścieżka do pliku w bin->net6.0
 
 
           // Wczytanie nazw urządzeń z pliku JSON do listy 
-          List<string> deviceFromIoTSim = ReadDeviceNamesFromJson(jsonFilePath);
+          List<string> deviceNames = ReadDeviceNamesFromJson(jsonFilePath);
 
           // prośba o podanie ścieżki URL do serwera OPC UA 
           // opc.tcp://localhost:4840/
@@ -53,59 +53,60 @@ class Program
           {
                client.Connect();
                Console.WriteLine("OPC UA Łączenie zakończone sukcesem !");
-
-
-
-                OpcValue ProductionStatus = client.ReadNode($"ns=2;s=Device 1/ProductionStatus");
-
-               var device = new Class1(deviceClient, client);
-
-               while ((int)ProductionStatus.Value == 0 || (int)ProductionStatus.Value == 1)
-               {
+                //OpcValue ProductionStatus = client.ReadNode($"ns=2;s=Device 1/ProductionStatus");
 
                     //lista commands
                     List<OpcReadNode> commands = new List<OpcReadNode>();
+
+                    var device = new Class1(deviceClient, client);
                     Console.WriteLine("---------");
 
 
 
-
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
-                    foreach (string deviceName in deviceFromIoTSim)
+                    foreach (string deviceName in deviceNames)
                     {
+
+                     
                          OpcValue name = deviceName;
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus"));
                          OpcValue ProductionS = client.ReadNode("ns=2;s=" + deviceName + "/ProductionStatus");
+                        
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionRate", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionRate"));
                          OpcValue ProductionRate = client.ReadNode("ns=2;s=" + deviceName + "/ProductionRate");
+                         
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/WorkorderId", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/WorkorderId"));
                          OpcValue WorkorderId = client.ReadNode("ns=2;s=" + deviceName + "/WorkorderId");
+                        
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/Temperature", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/Temperature"));
                          OpcValue Temperature = client.ReadNode("ns=2;s=" + deviceName + "/Temperature");
+
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/GoodCount", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/GoodCount"));
                          OpcValue GoodCount = client.ReadNode("ns=2;s=" + deviceName + "/GoodCount");
+
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/BadCount", OpcAttribute.DisplayName));
                          OpcValue BadCount = client.ReadNode("ns=2;s=" + deviceName + "/BadCount");
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/BadCount"));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError"));
                          OpcValue DeviceErrors = client.ReadNode("ns=2;s=" + deviceName + "/DeviceError");
+                   
+                  
 
-                         var data = new
+                    var data = new
                          {
-                              name = name,
-                              ProductionStatus = ProductionS,
-                              ProductionRate = ProductionRate,
-                              WorkorderId = WorkorderId,
+                              name = name.Value,
+                              ProductionStatus = ProductionS.Value,
+                              WorkorderId = WorkorderId.Value,
                               GoodCount = GoodCount.Value,
                               BadCount = BadCount.Value,
                               Temperature = Temperature.Value,
-
+                              ProductionRate = ProductionRate.Value,
                          };
                          Console.WriteLine(data);
 
@@ -113,8 +114,8 @@ class Program
 
                          Console.WriteLine("___________________");
 
-                         await device.InitializeHandlers();
-                         await device.SendTelemetry(data);
+                    
+                      await device.SendTelemetry(data);
 
                     }
 
@@ -131,7 +132,7 @@ class Program
                          if (numer % 14 == 0)
                          {
 
-                              Console.WriteLine($" DEVICE {deviceFromIoTSim[numerUrzadzenia]}  ");
+                              Console.WriteLine($" DEVICE {deviceNames[numerUrzadzenia]}  ");
                               numerUrzadzenia++;
                          }
 
@@ -151,9 +152,9 @@ class Program
                     }
 
 
-               }
+                Console.ReadKey();
 
-               client.Disconnect();
+               //client.Disconnect();
           }
 
 

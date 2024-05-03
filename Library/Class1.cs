@@ -21,47 +21,70 @@ namespace Library
                this.OPC = OPC;
           }
 
+          /*
+                    #region D2C - Sending telemetry
+                    public async Task SendTelemetry(dynamic data)
+                    {
+                         Console.WriteLine(data);
+
+                         var selectedData = new
+                         {
+                              //nazwa = data.name,
+                              //ProductionStatus = data.ProductionStatus,
+                              WorkorderId = data.WorkorderId,
+                              Temperature = data.Temperature,
+                              ProductionRate = data.ProductionRate,
+                              GoodCount = data.GoodCount,
+                              BadCount = data.BadCount,
+                         };
+
+                         var dataString = JsonConvert.SerializeObject(selectedData);
+                         Console.WriteLine(dataString);
+                         Message eventMessage = new Message(Encoding.UTF8.GetBytes(dataString));
+                         eventMessage.ContentType = MediaTypeNames.Application.Json;
+                         eventMessage.ContentEncoding = "utf-8";
+                         await client.SendEventAsync(eventMessage);
+                         if (true)
+                              await Task.Delay(2000); //20sekund
+
+                         Console.WriteLine(" Koniec wywołania metody SendTelemetry z Library ");
+
+                    }
+                    #endregion
+
+          */
+
 
           #region D2C - Sending telemetry
           public async Task SendTelemetry(dynamic data)
           {
-               Console.WriteLine(" Wywołana metoda SendTelemetry z Library ");
-               // tworzenie wlasnego szablony do JSON do Azure IOT Previev 
-               var chooseJOSNvalue = new
+               Console.WriteLine(data);
+          /*     var selectedData = new
                {
-                    deviceID = data.name.value,
-                    ProductionStatus = data.ProductionStatus.Value,
-                    WorkorderId = data.WorkorderIdStatus,
+                    DeviceName = data.name,
+                    WorkorderId = data.WorkorderId,
+                    ProductionStatus = data.ProductionStatus,
+                    Temperature = data.Temperature,
+                    ProductionRate = data.ProductionRate,
                     GoodCount = data.GoodCount,
                     BadCount = data.BadCount,
-                    Temperature = data.Temperature,
-               };
-
+                    DeviceErrors = data.DeviceErrors,
+               };*/
 
                var dataString = JsonConvert.SerializeObject(data);
-
+               Console.WriteLine(dataString);
                Message eventMessage = new Message(Encoding.UTF8.GetBytes(dataString));
                eventMessage.ContentType = MediaTypeNames.Application.Json;
                eventMessage.ContentEncoding = "utf-8";
                await client.SendEventAsync(eventMessage);
                if (true)
-                    await Task.Delay(20000); // co 20 sekund
+                    await Task.Delay(2000); //2000milisekund = 20sekund 
 
-               Console.WriteLine(" Koniec wywołania metody SendTelemetry z Library ");
 
           }
           #endregion
 
 
-
-
-          public async Task InitializeHandlers()
-          {
-               
-
-               Console.WriteLine("   wywołania metody InitializeHandlers z Library ");
-
-          }
 
      }
 }
