@@ -105,6 +105,8 @@ class Program
                          Console.WriteLine(data);
                          Console.WriteLine("___________________");
                          await device.SendTelemetry(data);
+                         
+                         await device.UpdateTwinReported(deviceName);
                          Console.WriteLine("___________________");
 
                     }
