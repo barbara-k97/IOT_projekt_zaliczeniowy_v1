@@ -77,8 +77,7 @@ namespace Library
                eventMessage.ContentType = MediaTypeNames.Application.Json;
                eventMessage.ContentEncoding = "utf-8";
                await client.SendEventAsync(eventMessage);
-               if (true)
-                    await Task.Delay(20000); //20000milisekund = 20sekund 
+              
 
 
           }
@@ -86,7 +85,6 @@ namespace Library
 
 
           #region Device Twin
-
 
           public async Task UpdateTwinAsync()
           {
