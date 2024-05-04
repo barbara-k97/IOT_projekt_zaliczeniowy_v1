@@ -100,6 +100,7 @@ class Program
                               BadCount = BadCount.Value,
                               Temperature = Temperature.Value,
                               ProductionRate = ProductionRate.Value,
+                              DeviceErrors = DeviceErrors.Value
                          };
                          Console.WriteLine(data);
                          Console.WriteLine("___________________");

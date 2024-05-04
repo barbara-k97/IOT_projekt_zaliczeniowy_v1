@@ -93,10 +93,10 @@ namespace Library
                Console.WriteLine($"\nInitial twin value received: \n{JsonConvert.SerializeObject(twin, Formatting.Indented)}");
                Console.WriteLine();
 
-               var reportedProperties = new TwinCollection();
-               reportedProperties["DateTimeLastAppLaunch"] = DateTime.Now;
+             //  var reportedProperties = new TwinCollection();
+              // reportedProperties["DateTimeLastAppLaunch"] = DateTime.Now;
 
-               await client.UpdateReportedPropertiesAsync(reportedProperties);
+               //await client.UpdateReportedPropertiesAsync(reportedProperties);
           }
 
           private async Task OnDesiredPropertyChanged(TwinCollection desiredProperties, object userContext)
@@ -109,8 +109,29 @@ namespace Library
                await client.UpdateReportedPropertiesAsync(reportedProperties).ConfigureAwait(false);
           }
 
+          //reportet to co nam zwraca maszyna 
+         // disaret to to co my ustawiamy na maszynie
+
+          public async Task UpdateReportedTwinAsync(string deviceName, int  DeviceErrorsValue)
+          {
+               //   
+               // W przypadku zmiany wartosci należy wysłać komunikat D2C ( device to cloud) do IOT
+               // bieżac a wartosc musi byc w raportowanym bliżniaczym urządzeniu 
+               Console.WriteLine("urządzenie :", deviceName , "  błędy :" , DeviceErrorsValue);
+
+               string Device_nazwaBEZspacji = deviceName.Replace(" ", "");
+               string device_error_count = Device_nazwaBEZspacji + "_error";
+
+               string device_production_count = Device_nazwaBEZspacji + "_production";
+
+
+
+          }
+
+
           #endregion Device Twin
 
+           
 
 
 
