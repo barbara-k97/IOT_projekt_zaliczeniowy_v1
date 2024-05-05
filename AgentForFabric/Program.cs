@@ -18,7 +18,6 @@ class Program
           Console.WriteLine("-------------------------------------------------");
 
 
-
           // AZURE podpięcie się do urządzenia w hubZajecia o nazwie test_device
           Console.WriteLine(" !!!            ---  Łączenie z  Azure !");
           // String do połączenia z Azure wpisane 
@@ -33,13 +32,6 @@ class Program
 
           // ŁĄCZENIE I POBIERANIE DANYCH Z OPC UA 
 
-
-                         //  nazwa pliku json z device 
-                         // string jsonFilePath = Path.Combine("device_names.json");  //ścieżka do pliku 
-                          // Wczytanie nazw urządzeń z pliku JSON do listy 
-                         //List<string> deviceFromIoTSim = ReadDeviceNamesFromJson(jsonFilePath);
-
-        
 
           // prośba o podanie ścieżki URL do serwera OPC UA 
           // opc.tcp://localhost:4840/
@@ -57,6 +49,7 @@ class Program
                List<String> devicesList = ReadDeviceFromSimulator(node);
 
                var device = new Class1(deviceClient, client);
+
 
                while (devicesList.Count> 0 )
                {
@@ -108,15 +101,8 @@ class Program
                         // Console.WriteLine(data);
                          Console.WriteLine("___________________");
                          await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value,  GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
-
-                         
-                         string dName = (string)data.nameDev;
-                         int ProductionRateInt = (int)data.ProductionRate;
-                         int DeviceErrorsInt = (int)data.DeviceErrors;
-                         Console.WriteLine("nazwa : ", dName , ProductionRateInt , DeviceErrorsInt );
                   
                          Console.WriteLine("___________________");
-
                     }
                     
 
@@ -134,7 +120,6 @@ class Program
                               Console.WriteLine($" DEVICE {devicesList[numerUrzadzenia]}  ");
                               numerUrzadzenia++;
                          }
-
                          // wyswietla wartosc dla urzadzenia
                          Console.WriteLine(item.Value);
 
@@ -155,34 +140,7 @@ class Program
           Console.ReadLine();
 
      }
-
-     /*
-     static List<string> ReadDeviceNamesFromJson(string filePath)
-     {
-          List<string> deviceNames = new List<string>();
-
-          try
-          {
-               // Wczytanie zawartości pliku JSON
-               string jsonContent = File.ReadAllText(filePath);
-               // Deserializacja zawartości JSON do obiektu
-               var jsonObject = JsonConvert.DeserializeObject<dynamic>(jsonContent);
-               // Pobranie listy nazw urządzeń z obiektu JSON
-               foreach (var deviceName in jsonObject.deviceNames)
-               {
-                    deviceNames.Add(deviceName.ToString());
-               }
-               Console.WriteLine("####");
-          }
-          catch (Exception ex)
-          {
-               Console.WriteLine($"Nie udało sie odczytać zawartości w pliku JSON: {ex.Message}");
-          }
-          return deviceNames;
-     }
-     */
-
-
+  
 
      // LISTA DO POBRANIA NAZW DEVICE  I ILE ICH JEST  W SYMULATORXE 
 
