@@ -68,7 +68,7 @@ class Program
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
                     foreach (string deviceName in devicesList)
                     {
-                         OpcValue nameD = deviceName;
+                         OpcValue name = deviceName;
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus"));
                          OpcValue ProductionS = client.ReadNode("ns=2;s=" + deviceName + "/ProductionStatus");
@@ -93,7 +93,7 @@ class Program
 
                          var data = new
                          {
-                              name = nameD.Value,
+                              nameDev = name.Value,
                               ProductionStatus = ProductionS.Value,
                               WorkorderId = WorkorderId.Value,
                               GoodCount = GoodCount.Value,
@@ -102,17 +102,19 @@ class Program
                               ProductionRate = ProductionRate.Value,
                               DeviceErrors = DeviceErrors.Value
                          };
-                         Console.WriteLine(data);
-                         Console.WriteLine("___________________");
-                         await device.SendTelemetry(data);
+
 
                          
-                         string dName = (string)data.name;
+                        // Console.WriteLine(data);
+                         Console.WriteLine("___________________");
+                         await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value,  GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
+
+                         
+                         string dName = (string)data.nameDev;
                          int ProductionRateInt = (int)data.ProductionRate;
                          int DeviceErrorsInt = (int)data.DeviceErrors;
-
-                        await device.SetTwinAsync( dName ,DeviceErrorsInt, ProductionRateInt );
-                       //   await device.UpdateTwinAsync(  dName, ProductionRateInt, DeviceErrorsInt);
+                         Console.WriteLine("nazwa : ", dName , ProductionRateInt , DeviceErrorsInt );
+                  
                          Console.WriteLine("___________________");
 
                     }
@@ -144,7 +146,7 @@ class Program
                     }
 
                     // czekanie az wszystkie device zostaną sprawdzone, dane zebrane i wtedy dopiero
-                    await Task.Delay(20000); //20000milisekund = 20sekund 
+                    await Task.Delay(10000); //10000milisekund = 10sekund 
                }
                client.Disconnect();
           }
