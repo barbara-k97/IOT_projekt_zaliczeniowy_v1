@@ -68,7 +68,7 @@ class Program
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
                     foreach (string deviceName in devicesList)
                     {
-                         OpcValue name = deviceName;
+                         OpcValue nameD = deviceName;
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus", OpcAttribute.DisplayName));
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus"));
                          OpcValue ProductionS = client.ReadNode("ns=2;s=" + deviceName + "/ProductionStatus");
@@ -93,7 +93,7 @@ class Program
 
                          var data = new
                          {
-                              name = name.Value,
+                              name = nameD.Value,
                               ProductionStatus = ProductionS.Value,
                               WorkorderId = WorkorderId.Value,
                               GoodCount = GoodCount.Value,
@@ -105,8 +105,14 @@ class Program
                          Console.WriteLine(data);
                          Console.WriteLine("___________________");
                          await device.SendTelemetry(data);
+
                          
-                         await device.UpdateTwinReported(deviceName);
+                         string dName = (string)data.name;
+                         int ProductionRateInt = (int)data.ProductionRate;
+                         int DeviceErrorsInt = (int)data.DeviceErrors;
+
+                        await device.SetTwinAsync( dName ,DeviceErrorsInt, ProductionRateInt );
+                       //   await device.UpdateTwinAsync(  dName, ProductionRateInt, DeviceErrorsInt);
                          Console.WriteLine("___________________");
 
                     }

@@ -6,6 +6,7 @@ using System.Net.Mime;
 using System.Text;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices.Client.Exceptions;
+using System.Net.Sockets;
 
 
 namespace Library
@@ -120,97 +121,121 @@ namespace Library
 
           #endregion
 
-
+          
 
           #region Device Twin
+          public async Task SetTwinAsync(string deviceName , int deviceError, int prodRate)
+          {
+               var twin = await client.GetTwinAsync();
+               Console.WriteLine();
 
-          public async Task UpdateTwinAsync()
+               //object nameDevice = data.name; 
+               var name = deviceName.Replace(" ", "");  // usuń spacje z nazwy 
+
+               //nazwy do JSON
+               var device_error = name + "_numer_bledu";
+               var device_production = name + "_production_procent";
+               // wartosci 
+               var device_error_count = deviceError;
+               var device_production_count = prodRate;
+
+               
+
+               var reportedProperties = new TwinCollection();
+               reportedProperties[device_error] = device_error_count;
+               reportedProperties[device_production] = device_production_count;
+             
+
+               await client.UpdateReportedPropertiesAsync(reportedProperties);
+               //Console.WriteLine($"{DateTime.Now}> Device Twin value was set.");
+
+          }
+
+          public async Task UpdateTwinAsync(string deviceName, int deviceError, int prodRate)
           {
                var twin = await client.GetTwinAsync();
 
-               Console.WriteLine($"\nInitial twin value received: \n{JsonConvert.SerializeObject(twin, Formatting.Indented)}");
+               var reportedProp = twin.Properties.Reported;    //reportet - wartosc na  maszynie
+               var desiredProp = twin.Properties.Desired;         // desired - wartosc  ustawiamy na maszynie
+
+               //object nameDevice = data.name; 
+               var name = deviceName.Replace(" ", "");  // usuń spacje z nazwy 
+
+               //nazwy do JSON
+               var device_error = name + "_numer_bledu";
+               var device_production = name + "_production_procent";
+               // wartosci 
+               var device_error_count = deviceError;
+               var device_production_count = prodRate;
+               Console.WriteLine("error :", device_error, " , ", device_error_count);
+
+               if (reportedProp.Contains(device_error))
+               {
+                    var errorInTgisMoment = reportedProp[device_error];
+                    // jak błąd jest inny
+                    if (errorInTgisMoment != device_error_count)
+                    {
+
+                         // zmienił się błąd , trzeba wyświeylić informacje
+                         var updateProp = new TwinCollection();
+                         updateProp[device_error] = device_error_count;
+                         try
+                         {
+                              await client.UpdateReportedPropertiesAsync(updateProp);
+                              Console.WriteLine("Zaktualowano liczbe bledów dla :   ", device_error, ".");
+                              Console.WriteLine($"{DateTime.Now}> Device Twin   was update.");
+                         }
+                         catch (IotHubException ex)
+                         {
+                              Console.WriteLine("Blad podczas zmiany wartosci bledu", device_error);
+                         }
+
+
+                    }
+                    else
+                    {
+                         Console.WriteLine(" Brak zmiany bledu - nie wykonano zmian");
+                    }
+               }
+
+               Console.WriteLine($"{DateTime.Now}> Device Twin value was update.");
                Console.WriteLine();
+ 
+            
 
-              // var reportedProperties = new TwinCollection();
-              // reportedProperties["DateTimeLastAppLaunch"] = DateTime.Now;
-
-             //  await client.UpdateReportedPropertiesAsync(reportedProperties);
+              // await client.UpdateReportedPropertiesAsync(reportedProp);
           }
 
           private async Task OnDesiredPropertyChanged(TwinCollection desiredProperties, object userContext)
           {
-               // wypisanie zmian które się odbyly w desiredProperties
-               Console.WriteLine($"\tDesired property change:\n\t{JsonConvert.SerializeObject(desiredProperties)}");
-               Console.WriteLine("\tSending current time as reported property");
-               // utworzenie nowej kolekcji properties
+             //  Console.WriteLine($"\t{DateTime.Now}> Device Twin. Desired property change:\n\t{JsonConvert.SerializeObject(desiredProperties)}");
+             //  string nodeId = (string)userContext;
+             // int newProdRate = desiredProperties["ProductionRate"];
+              // string node = nodeId + "/ProductionRate";
+
+              // OpcStatus result = client.WriteNode(node, newProdRate);
+              // Console.WriteLine($"\t{DateTime.Now}> opcClient.WriteNode is result good: " + result.IsGood.ToString());
                TwinCollection reportedProperties = new TwinCollection();
-               // przypisanie nowej wartości do wskazanj propertki, tutaj akurat data bierząda 
                reportedProperties["DateTimeLastDesiredPropertyChangeReceived"] = DateTime.Now;
-               // updatujemy properties , ConfigureAwait(false) znaczy ze nie cgcemy wprowadzic konfiguracji
+                
+
                await client.UpdateReportedPropertiesAsync(reportedProperties).ConfigureAwait(false);
           }
-
-          //reportet to co nam zwraca maszyna 
-         // desired to to co my ustawiamy na maszynie
-
-          public async Task UpdateTwinReported(string deviceName)
-          {
-               //   reportet to co nam zwraca maszyna 
-               // W przypadku zmiany wartosci należy wysłać komunikat D2C ( device to cloud) do IOT
-               // bieżaca wartosc musi byc w raportowanym bliżniaczym urządzeniu 
-              // Console.WriteLine("urządzenie :", data.deviceName , "  błędy :" , data.DeviceErrorsValue);
-
-               var twin = await client.GetTwinAsync();  // z UpdateTwinAsync()
-
-               var odebraneWartosc = twin.Properties.Reported;    //reportet - wartosc na  maszynie
-               var nowaWartosc = twin.Properties.Desired;         // desired - wartosc  ustawiamy na maszynie
-
-
-               var name =  deviceName.Replace(" ", "");  // usuń spacje z nazwy 
-
-                   //nazwy do JSON
-               var device_error_count = deviceName + "_numer_bledu";
-               var device_production_count = deviceName + "_production_procent";
-
-
-               if(odebraneWartosc.Contains(deviceName )) // gdy w odebranejWartosci zawiera sie Device
-               {
-                    var zmienianaWartosc = odebraneWartosc[device_error_count];
-                    try
-                    {
-                         await client.UpdateReportedPropertiesAsync(zmienianaWartosc);
-                         Console.WriteLine("Zaaktualizowano pozycjeL  ", device_error_count);
-                    }
-                    catch (IotHubException ex)
-                    {
-                         Console.WriteLine("Bład aktualizacji pozycji ", device_error_count);
-                    } 
-                    
-
-               }
-               else
-               {
-                    Console.WriteLine(" Błą na urządzneiu się nei zmienił , nic nie zrobiono ");
-               }
-            
-
-
-
-
-               // gdy nazwa w JSON istnieje czyli np"Device1_numer_bledu" 
-              
-              // reportedProperties[device_production_count] = data.ProductionRate;
-
-
-             //  await client.UpdateReportedPropertiesAsync(reportedProperties);
-
-          }
-
-
           #endregion Device Twin
 
-           
 
+
+
+          public async Task InitializeHandlers(string userContext)
+          {
+               
+
+             //  await client.SetMethodHandlerAsync("SendMessages", SendMessageToIOT, client);
+               
+
+               await client.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChanged, client);
+                ;
+          }
 
 
      }
