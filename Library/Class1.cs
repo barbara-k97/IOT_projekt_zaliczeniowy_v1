@@ -9,6 +9,7 @@ using Microsoft.Azure.Devices.Client.Exceptions;
 using System.Net.Sockets;
 using Newtonsoft.Json.Linq;
 using Microsoft.Azure.Amqp.Framing;
+using Opc.Ua;
 
 
 namespace Library
@@ -238,6 +239,9 @@ namespace Library
                Console.WriteLine();
           }
 
+
+
+
           private async Task OnDesiredPropertyChanged(TwinCollection desiredProperties, object userContext)
           {
                //  Console.WriteLine($"\t{DateTime.Now}> Device Twin. Desired property change:\n\t{JsonConvert.SerializeObject(desiredProperties)}");
@@ -250,9 +254,34 @@ namespace Library
           #endregion Device Twin
 
 
+          #region Direct Methods - ResetErrorStatus
+            public   async Task ResetError(string deviceName)
+            {
+                 Console.WriteLine($"\tMETHOD EXECUTED ResetErrorStatus FROM : {deviceName}");
+                 OPC.CallMethod($"ns=2;s={deviceName}", $"ns=2;s={deviceName}/ResetErrorStatus");
+                 await Task.Delay(1000); 
+            }
 
- 
+          private async Task<MethodResponse> ResetErrorStatus(MethodRequest methodRequest, object userContext)
+          {
+               var payload = JsonConvert.DeserializeAnonymousType(methodRequest.DataAsJson, new {deviceName = default(string)});
+               Console.WriteLine($"\tMETHOD EXECUTED: {methodRequest.Name} na {payload.deviceName}"); 
+               await ResetError(payload.deviceName);
+               return new MethodResponse(0);
+          }
+          #endregion
 
+               #region InitializeHandlers
+          public async Task InitializeHandlers()
+          {
+                
+               await client.SetMethodHandlerAsync("ResetErrorStatus", ResetErrorStatus, client);
+              
+
+                
+          }
+
+          #endregion
 
      }
 }

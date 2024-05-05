@@ -49,7 +49,7 @@ class Program
                List<String> devicesList = ReadDeviceFromSimulator(node);
 
                var device = new Class1(deviceClient, client);
-
+               await device.InitializeHandlers();
 
                while (devicesList.Count> 0 )
                {
