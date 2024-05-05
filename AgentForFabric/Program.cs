@@ -18,7 +18,7 @@ class Program
           Console.WriteLine("-------------------------------------------------");
 
 
-      
+
           // AZURE podpięcie się do urządzenia w hubZajecia o nazwie test_device
           Console.WriteLine(" !!!            ---  Łączenie z  Azure !");
           // String do połączenia z Azure wpisane 
@@ -28,18 +28,18 @@ class Program
           await deviceClient.OpenAsync();
           Console.WriteLine(" !!!          Łączenie z Azure zakończone sukcesem !");
 
-        
-          
-          
+
+
+
           // ŁĄCZENIE I POBIERANIE DANYCH Z OPC UA 
 
 
-          //  nazwa pliku json z device 
-          string jsonFilePath = Path.Combine("device_names.json");  //ścieżka do pliku 
+                         //  nazwa pliku json z device 
+                         // string jsonFilePath = Path.Combine("device_names.json");  //ścieżka do pliku 
+                          // Wczytanie nazw urządzeń z pliku JSON do listy 
+                         //List<string> deviceFromIoTSim = ReadDeviceNamesFromJson(jsonFilePath);
 
-
-          // Wczytanie nazw urządzeń z pliku JSON do listy 
-          List<string> deviceFromIoTSim = ReadDeviceNamesFromJson(jsonFilePath);
+        
 
           // prośba o podanie ścieżki URL do serwera OPC UA 
           // opc.tcp://localhost:4840/
@@ -47,31 +47,26 @@ class Program
           Console.WriteLine("Podaj sciezke URL do serwera OPC UA  : ");
           string adresServerOPC = Console.ReadLine() ?? string.Empty;
 
-      
 
           using (var client = new OpcClient(adresServerOPC))
           {
                client.Connect();
                Console.WriteLine("OPC UA Łączenie zakończone sukcesem !");
 
-
-
-                OpcValue ProductionStatus = client.ReadNode($"ns=2;s=Device 1/ProductionStatus");
+               var node = client.BrowseNode(OpcObjectTypes.ObjectsFolder);
+               List<String> devicesList = ReadDeviceFromSimulator(node);
 
                var device = new Class1(deviceClient, client);
 
-               while ((int)ProductionStatus.Value == 0 || (int)ProductionStatus.Value == 1)
+               while (devicesList.Count> 0 )
                {
 
                     //lista commands
                     List<OpcReadNode> commands = new List<OpcReadNode>();
                     Console.WriteLine("---------");
 
-
-
-
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
-                    foreach (string deviceName in deviceFromIoTSim)
+                    foreach (string deviceName in devicesList)
                     {
                          OpcValue name = deviceName;
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/ProductionStatus", OpcAttribute.DisplayName));
@@ -96,14 +91,34 @@ class Program
                          commands.Add(new OpcReadNode("ns=2;s=" + deviceName + "/DeviceError"));
                          OpcValue DeviceErrors = client.ReadNode("ns=2;s=" + deviceName + "/DeviceError");
 
+                         var data = new
+                         {
+                              nameDev = name.Value,
+                              ProductionStatus = ProductionS.Value,
+                              WorkorderId = WorkorderId.Value,
+                              GoodCount = GoodCount.Value,
+                              BadCount = BadCount.Value,
+                              Temperature = Temperature.Value,
+                              ProductionRate = ProductionRate.Value,
+                              DeviceErrors = DeviceErrors.Value
+                         };
 
- 
+
+                         
+                        // Console.WriteLine(data);
+                         Console.WriteLine("___________________");
+                         await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value,  GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
+
+                         
+                         string dName = (string)data.nameDev;
+                         int ProductionRateInt = (int)data.ProductionRate;
+                         int DeviceErrorsInt = (int)data.DeviceErrors;
+                         Console.WriteLine("nazwa : ", dName , ProductionRateInt , DeviceErrorsInt );
+                  
                          Console.WriteLine("___________________");
 
-                      
-
                     }
-
+                    
 
                     IEnumerable<OpcValue> job = client.ReadNodes(commands.ToArray());
 
@@ -116,65 +131,77 @@ class Program
                     {
                          if (numer % 14 == 0)
                          {
-
-                              Console.WriteLine($" DEVICE {deviceFromIoTSim[numerUrzadzenia]}  ");
+                              Console.WriteLine($" DEVICE {devicesList[numerUrzadzenia]}  ");
                               numerUrzadzenia++;
                          }
-
 
                          // wyswietla wartosc dla urzadzenia
                          Console.WriteLine(item.Value);
 
                          if ((numer + 1) % 14 == 0)
                          {
-
                               Console.WriteLine("___________________");
-
                          }
-
                          numer++;
-
                     }
 
-
+                    // czekanie az wszystkie device zostaną sprawdzone, dane zebrane i wtedy dopiero
+                    await Task.Delay(10000); //10000milisekund = 10sekund 
                }
-
                client.Disconnect();
           }
-
-
-
-
-          static List<string> ReadDeviceNamesFromJson(string filePath)
-          {
-               List<string> deviceNames = new List<string>();
-
-               try
-               {
-                    // Wczytanie zawartości pliku JSON
-                    string jsonContent = File.ReadAllText(filePath);
-                    // Deserializacja zawartości JSON do obiektu
-                    var jsonObject = JsonConvert.DeserializeObject<dynamic>(jsonContent);
-                    // Pobranie listy nazw urządzeń z obiektu JSON
-                    foreach (var deviceName in jsonObject.deviceNames)
-                    {
-                         deviceNames.Add(deviceName.ToString());
-                    }
-                    Console.WriteLine("####");
-               }
-               catch (Exception ex)
-               {
-                    Console.WriteLine($"Nie udało sie odczytać zawartości w pliku JSON: {ex.Message}");
-               }
-               return deviceNames;
-          }
-
-
-
-
 
           Console.WriteLine("AgentForFabric zatrzymana   ");
           Console.ReadLine();
 
      }
+
+     /*
+     static List<string> ReadDeviceNamesFromJson(string filePath)
+     {
+          List<string> deviceNames = new List<string>();
+
+          try
+          {
+               // Wczytanie zawartości pliku JSON
+               string jsonContent = File.ReadAllText(filePath);
+               // Deserializacja zawartości JSON do obiektu
+               var jsonObject = JsonConvert.DeserializeObject<dynamic>(jsonContent);
+               // Pobranie listy nazw urządzeń z obiektu JSON
+               foreach (var deviceName in jsonObject.deviceNames)
+               {
+                    deviceNames.Add(deviceName.ToString());
+               }
+               Console.WriteLine("####");
+          }
+          catch (Exception ex)
+          {
+               Console.WriteLine($"Nie udało sie odczytać zawartości w pliku JSON: {ex.Message}");
+          }
+          return deviceNames;
+     }
+     */
+
+
+
+     // LISTA DO POBRANIA NAZW DEVICE  I ILE ICH JEST  W SYMULATORXE 
+
+     //czytanie nazw Device z symulatora
+     static List<String> ReadDeviceFromSimulator(OpcNodeInfo node, int numberDevice = 0)
+     {
+          List<String> deviceNames = new List<String>();
+          numberDevice++;
+          //Console.WriteLine(" !    Lista urzadzen:" );
+          foreach (var childNode in node.Children())
+          {
+               if (childNode.DisplayName.Value.Contains("Device "))
+               {
+                    Console.WriteLine("  Device:" + childNode.DisplayName.Value);
+                    deviceNames.Add(childNode.DisplayName.Value);
+               }
+               ReadDeviceFromSimulator(childNode, numberDevice);
+          }
+          return deviceNames;
+     }
+
 }
