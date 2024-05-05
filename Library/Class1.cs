@@ -137,8 +137,10 @@ namespace Library
                // wartosci 
                var device_error_count = deviceError;
                var device_production_count = prodRate;
-               Console.WriteLine("error :", device_error, " , ", device_error_count);
+               
 
+
+               // OBSŁUGA ZMAINY BLEDU 
                // Jeśli już taki wpis istnieje
                if (reportedProp.Contains(device_error))
                {
@@ -185,7 +187,54 @@ namespace Library
                     }
                }
 
-               
+               // OBSŁUGA ZMAINY % PRODUKCJI  
+               // Jeśli już taki wpis istnieje
+               if (reportedProp.Contains(device_production))
+               {
+                    var errorInTgisMoment = reportedProp[device_production];
+                    // jak błąd jest inny
+                    if (errorInTgisMoment != device_production_count)
+                    {
+
+                         // zmienił się błąd , trzeba wyświeylić informacje
+                         var updateProp = new TwinCollection();
+                         updateProp[device_production] = device_production_count;
+                         try
+                         {
+                              await client.UpdateReportedPropertiesAsync(updateProp);
+                              Console.WriteLine("Zaktualowano % produkcji dla :   ", device_production, ".");
+                              Console.WriteLine($"{DateTime.Now}> Device Twin   was update.");
+                         }
+                         catch (IotHubException ex)
+                         {
+                              Console.WriteLine("Blad podczas zmiany wartosci bledu", device_production);
+                         }
+
+
+                    }
+                    else
+                    {
+                         Console.WriteLine(" Brak zmiany bledu - nie wykonano zmian");
+                    }
+               }
+               else
+               {
+                    // jeśli nie ma takiego wpisu dla Device w reported to dodaj
+                    var updateProp = new TwinCollection();
+                    updateProp[device_production] = device_production_count;
+                    try
+                    {
+                         await client.UpdateReportedPropertiesAsync(updateProp);
+                         Console.WriteLine("Zaktualowano % produkcji dla :    ", device_production, ".");
+                         Console.WriteLine($"{DateTime.Now}> Device Twin   was update.");
+                    }
+                    catch (IotHubException ex)
+                    {
+                         Console.WriteLine("Blad podczas zmiany wartosci bledu", device_production);
+                    }
+               }
+
+
                Console.WriteLine();
           }
 
