@@ -271,14 +271,35 @@ namespace Library
           }
           #endregion
 
-               #region InitializeHandlers
+
+
+          #region Direct Methods - Emergency Stop
+          public async Task EmergencyStop(string deviceName)
+          {
+               Console.WriteLine($"\tMETHOD EXECUTED Emergency Stop FROM : {deviceName}");
+               OPC.CallMethod($"ns=2;s={deviceName}", $"ns=2;s={deviceName}/EmergencyStop");
+               await Task.Delay(1000);
+          }
+
+          private async Task<MethodResponse> EmergencyStopStatus(MethodRequest methodRequest, object userContext)
+          {
+               var payload = JsonConvert.DeserializeAnonymousType(methodRequest.DataAsJson, new { deviceName = default(string) });
+               Console.WriteLine($"\tMETHOD EXECUTED: {methodRequest.Name} na {payload.deviceName}");
+               await EmergencyStop(payload.deviceName);
+               return new MethodResponse(0);
+          }
+          #endregion
+
+
+
+          #region InitializeHandlers
           public async Task InitializeHandlers()
           {
                 
                await client.SetMethodHandlerAsync("ResetErrorStatus", ResetErrorStatus, client);
-              
+               await client.SetMethodHandlerAsync("EmergencyStopStatus", EmergencyStopStatus, client);
 
-                
+
           }
 
           #endregion
