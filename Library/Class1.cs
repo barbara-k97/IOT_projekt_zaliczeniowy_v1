@@ -162,8 +162,7 @@ namespace Library
                          catch (IotHubException ex)
                          {
                               Console.WriteLine("Blad podczas zmiany wartosci bledu", device_error);
-                         }
-
+                         } 
 
                     }
                     else
