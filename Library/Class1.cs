@@ -31,19 +31,6 @@ namespace Library
           public async Task SendTelemetry(string DeviceName, object WorkorderId, object ProductionStatus, object Temperature, object ProductionRate,
                         object GoodCount, object BadCount, object DeviceErrors)
           {
-               //Console.WriteLine(data);
-               /*var selectedData = new
-               {
-                    DeviceName = DeviceName,
-                    WorkorderId = WorkorderId,
-                    ProductionStatus = ProductionStatus,
-                    Temperature = Temperature,
-                    ProductionRate = ProductionRate,
-                    GoodCount = GoodCount,
-                    BadCount = BadCount,
-                    DeviceErrors = DeviceErrors,
-               };*/
-
                var twin = await client.GetTwinAsync();
                var reportedProperties = twin.Properties.Reported;
                var nameDevice = DeviceName.Replace(" ", "");
@@ -99,8 +86,6 @@ namespace Library
           #endregion
 
 
-
-
           #region SendMessageToIOT
 
           public async Task SendMessageToIOT(dynamic data)
@@ -123,11 +108,10 @@ namespace Library
           { 
                //DeviceError wysylamy tylko gdy sie zmini 
                // bliżniak jak chcemy zmienić jakąś konfiguracje  lub gdy urządzenie reportuje że zmienilo konfiguracje 
-
                var twin = await client.GetTwinAsync();
 
-               var reportedProp = twin.Properties.Reported;    //reportet - wartosc na  maszynie
-               var desiredProp = twin.Properties.Desired;         // desired - wartosc  ustawiamy na maszynie
+               var reportedProp = twin.Properties.Reported;       //reportet - wartosc na  maszynie
+               var desiredProp = twin.Properties.Desired;         // desired - wartosc  oczekiwana na maszynie
 
                //object nameDevice = data.name; 
                var name = deviceName.Replace(" ", "");  // usuń spacje z nazwy 
@@ -167,7 +151,7 @@ namespace Library
                     }
                     else
                     {
-                         Console.WriteLine(" Brak zmiany bledu - nie wykonano zmian");
+                        // Console.WriteLine(" Brak zmiany bledu - nie wykonano zmian");
                     }
                }
                else
@@ -214,7 +198,7 @@ namespace Library
                     }
                     else
                     {
-                         Console.WriteLine(" Brak zmiany bledu - nie wykonano zmian");
+                         //Console.WriteLine(" Brak zmiany bledu - nie wykonano zmian");
                     }
                }
                else
@@ -243,7 +227,7 @@ namespace Library
 
           private async Task OnDesiredPropertyChanged(TwinCollection desiredProperties, object userContext)
           {
-               //  Console.WriteLine($"\t{DateTime.Now}> Device Twin. Desired property change:\n\t{JsonConvert.SerializeObject(desiredProperties)}");
+                 Console.WriteLine($"\t{DateTime.Now}> Device Twin. Desired property change:\n\t{JsonConvert.SerializeObject(desiredProperties)}");
               
                TwinCollection reportedProperties = new TwinCollection();
                reportedProperties["DateTimeLastDesiredPropertyChangeReceived"] = DateTime.Now;

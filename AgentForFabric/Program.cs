@@ -21,18 +21,14 @@ class Program
           // AZURE podpięcie się do urządzenia w hubZajecia o nazwie test_device
           Console.WriteLine(" !!!            ---  Łączenie z  Azure !");
           // String do połączenia z Azure wpisane 
-          Console.WriteLine("Wpisz string do połączenia z Azure  ( Device Numbers ) : ");
+          Console.WriteLine("Wpisz string do połączenia z Azure  : ");
           string deviceConnectionString = Console.ReadLine() ?? string.Empty;
           using var deviceClient = DeviceClient.CreateFromConnectionString(deviceConnectionString, TransportType.Mqtt);
           await deviceClient.OpenAsync();
           Console.WriteLine(" !!!          Łączenie z Azure zakończone sukcesem !");
 
 
-
-
           // ŁĄCZENIE I POBIERANIE DANYCH Z OPC UA 
-
-
           // prośba o podanie ścieżki URL do serwera OPC UA 
           // opc.tcp://localhost:4840/
 
@@ -95,12 +91,12 @@ class Program
                               ProductionRate = ProductionRate.Value,
                               DeviceErrors = DeviceErrors.Value
                          };
-
-
+                          
                          
                         // Console.WriteLine(data);
                          Console.WriteLine("___________________");
-                         await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value,  GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
+                         await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value, 
+                              GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
                   
                          Console.WriteLine("___________________");
                     }
