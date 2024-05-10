@@ -32,6 +32,12 @@ Informacje o sytuacjach gdy naurządzeniu w ciągu minuty wystąpią więcewj ni
 */ 
 
 
-
-
-
+SELECT
+     System.Timestamp() as windowEndTime   ,DeviceName  , COUNT(*) as liczba_bledow 
+INTO
+    [deviceerrors]
+FROM
+    [hubZajecia]
+GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
+HAVING COUNT(DeviceErrors)>3; 
+ 
