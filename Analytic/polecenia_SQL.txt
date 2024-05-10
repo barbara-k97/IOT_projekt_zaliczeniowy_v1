@@ -3,7 +3,7 @@
 Procent dobrej produkcji w 5 min odstępach pogrupowane wedle urządzenia
 */
 SELECT
-   DeviceName , System.Timestamp() as windowEndTime , SUM(GoodCount) as good, SUM(BadCount) as bad, SUM(GoodCount)*100/(SUM(GoodCount) + SUM(BadCount))
+   DeviceName ,   System.Timestamp() as windowEndTime , SUM(GoodCount) as good, SUM(BadCount) as bad, SUM(GoodCount)*100/(SUM(GoodCount) + SUM(BadCount))
     AS "% of good production"
 INTO
     [production]
@@ -30,13 +30,8 @@ GROUP BY HoppingWindow(minute,5,1), DeviceName ;
 3. Błędy 
 Informacje o sytuacjach gdy naurządzeniu w ciągu minuty wystąpią więcewj niż 3 błędy.
 */ 
-SELECT
-       DeviceName  , System.Timestamp() as windowEndTime ,  COUNT(*) as sum_errors 
-INTO
-    [deviceerrors]
-FROM
-    [hubZajecia]
-WHERE 
-    DeviceErrors != null
-GROUP BY TumblingWindow(minute,1) , DeviceName 
-HAVING COUNT(sum_errors)>3; 
+
+
+
+
+

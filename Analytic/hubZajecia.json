@@ -1,0 +1,965 @@
+[
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 66.34662558567481,
+    "ProductionRate": 40,
+    "GoodCount": 48,
+    "BadCount": 8,
+    "DeviceErrors": 0,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:25:40.8510000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:25:40.7590000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 75.15646112390165,
+    "ProductionRate": 30,
+    "GoodCount": 28,
+    "BadCount": 4,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:25:41.3030000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:25:41.2310000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 63.40272556473901,
+    "ProductionRate": 20,
+    "GoodCount": 18,
+    "BadCount": 2,
+    "DeviceErrors": 0,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:25:41.7090000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:25:41.6430000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 72.94760711663727,
+    "ProductionRate": 40,
+    "GoodCount": 74,
+    "BadCount": 9,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:25:52.2750000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:25:52.2000000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 85.97254124195572,
+    "ProductionRate": 30,
+    "GoodCount": 43,
+    "BadCount": 5,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:25:52.5090000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:25:52.4170000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 66.79360414260924,
+    "ProductionRate": 20,
+    "GoodCount": 26,
+    "BadCount": 2,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:25:52.7280000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:25:52.6440000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 68.45871406614705,
+    "ProductionRate": 40,
+    "GoodCount": 94,
+    "BadCount": 12,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:02.9790000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:02.9140000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 86.92677249152285,
+    "ProductionRate": 30,
+    "GoodCount": 56,
+    "BadCount": 6,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:03.2130000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:03.1400000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 61.039753506659515,
+    "ProductionRate": 20,
+    "GoodCount": 40,
+    "BadCount": 2,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:03.4630000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:03.3910000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 73.0991442758461,
+    "ProductionRate": 40,
+    "GoodCount": 116,
+    "BadCount": 14,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:13.7140000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:13.6460000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 70.64848961452837,
+    "ProductionRate": 30,
+    "GoodCount": 73,
+    "BadCount": 8,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:13.9480000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:13.8640000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 73.4934637136897,
+    "ProductionRate": 20,
+    "GoodCount": 46,
+    "BadCount": 2,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:14.1670000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:14.0890000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 60.49639711586565,
+    "ProductionRate": 40,
+    "GoodCount": 139,
+    "BadCount": 17,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:24.4010000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:24.3250000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 61.78492061643784,
+    "ProductionRate": 30,
+    "GoodCount": 89,
+    "BadCount": 8,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:24.6670000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:24.5920000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 70.2472556709882,
+    "ProductionRate": 20,
+    "GoodCount": 57,
+    "BadCount": 3,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:24.9010000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:24.8150000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 62.03653869425096,
+    "ProductionRate": 40,
+    "GoodCount": 163,
+    "BadCount": 19,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:35.1520000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:35.0700000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 70.82567349197667,
+    "ProductionRate": 30,
+    "GoodCount": 101,
+    "BadCount": 9,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:35.3720000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:35.2960000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 64.93843055867734,
+    "ProductionRate": 20,
+    "GoodCount": 68,
+    "BadCount": 4,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:35.6050000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:35.5160000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 60.75908652840221,
+    "ProductionRate": 40,
+    "GoodCount": 184,
+    "BadCount": 20,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:45.8400000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:45.7720000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 74.02992119865587,
+    "ProductionRate": 30,
+    "GoodCount": 117,
+    "BadCount": 10,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:46.0900000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:46.0030000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 65.71847948232237,
+    "ProductionRate": 20,
+    "GoodCount": 79,
+    "BadCount": 5,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:46.3090000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:46.2260000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 64.32920182864193,
+    "ProductionRate": 40,
+    "GoodCount": 199,
+    "BadCount": 21,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:56.5450000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:56.4770000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 84.8812998060774,
+    "ProductionRate": 30,
+    "GoodCount": 130,
+    "BadCount": 12,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:56.7790000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:56.6930000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 62.30233054486867,
+    "ProductionRate": 20,
+    "GoodCount": 84,
+    "BadCount": 5,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:26:56.9980000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:26:56.9260000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 77.02040224700862,
+    "ProductionRate": 40,
+    "GoodCount": 219,
+    "BadCount": 24,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:07.2480000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:07.1630000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 675,
+    "ProductionRate": 30,
+    "GoodCount": 150,
+    "BadCount": 13,
+    "DeviceErrors": 4,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:07.4670000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:07.3870000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 62.27060536380634,
+    "ProductionRate": 20,
+    "GoodCount": 86,
+    "BadCount": 6,
+    "DeviceErrors": 2,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:07.8420000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:07.7590000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 77.27130054298412,
+    "ProductionRate": 40,
+    "GoodCount": 238,
+    "BadCount": 29,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:18.2330000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:18.1500000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 512,
+    "ProductionRate": 30,
+    "GoodCount": 164,
+    "BadCount": 16,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:18.4520000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:18.3770000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": -119,
+    "ProductionRate": 20,
+    "GoodCount": 93,
+    "BadCount": 8,
+    "DeviceErrors": 12,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:18.6550000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:18.5990000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 77.22084572522168,
+    "ProductionRate": 40,
+    "GoodCount": 257,
+    "BadCount": 33,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:29.0460000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:28.9780000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 290,
+    "ProductionRate": 30,
+    "GoodCount": 183,
+    "BadCount": 17,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:29.2810000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:29.1920000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 61.26917454281312,
+    "ProductionRate": 20,
+    "GoodCount": 102,
+    "BadCount": 11,
+    "DeviceErrors": 0,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:29.4990000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:29.4180000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 490,
+    "ProductionRate": 40,
+    "GoodCount": 274,
+    "BadCount": 34,
+    "DeviceErrors": 6,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:39.8900000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:39.8110000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": -704,
+    "ProductionRate": 30,
+    "GoodCount": 194,
+    "BadCount": 17,
+    "DeviceErrors": 14,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:40.2500000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:40.1800000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 61.74056130280765,
+    "ProductionRate": 20,
+    "GoodCount": 109,
+    "BadCount": 12,
+    "DeviceErrors": 2,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:40.6400000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:40.5530000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 108,
+    "ProductionRate": 40,
+    "GoodCount": 282,
+    "BadCount": 36,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:51.0310000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:50.9510000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 62.488132789509265,
+    "ProductionRate": 30,
+    "GoodCount": 207,
+    "BadCount": 22,
+    "DeviceErrors": 0,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:51.2660000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:51.1780000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 64.07190734819952,
+    "ProductionRate": 20,
+    "GoodCount": 115,
+    "BadCount": 16,
+    "DeviceErrors": 10,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:27:51.6410000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:27:51.5650000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 84.28757603542607,
+    "ProductionRate": 40,
+    "GoodCount": 306,
+    "BadCount": 38,
+    "DeviceErrors": 0,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:02.0630000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:01.9840000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 70.80163468299136,
+    "ProductionRate": 30,
+    "GoodCount": 223,
+    "BadCount": 22,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:02.4530000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:02.3720000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 60.64087822636274,
+    "ProductionRate": 20,
+    "GoodCount": 124,
+    "BadCount": 16,
+    "DeviceErrors": 0,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:02.6720000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:02.5920000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 91.8698638087298,
+    "ProductionRate": 40,
+    "GoodCount": 330,
+    "BadCount": 40,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:13.0630000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:12.9820000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 69.93993955330814,
+    "ProductionRate": 30,
+    "GoodCount": 230,
+    "BadCount": 23,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:13.2820000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:13.2010000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 68.26420045697333,
+    "ProductionRate": 20,
+    "GoodCount": 132,
+    "BadCount": 18,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:13.5010000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:13.4200000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 69.01650989652083,
+    "ProductionRate": 40,
+    "GoodCount": 349,
+    "BadCount": 42,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:23.7360000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:23.6650000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 61.39711110778781,
+    "ProductionRate": 30,
+    "GoodCount": 243,
+    "BadCount": 25,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:24.0180000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:23.9260000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 3",
+    "WorkorderId": "151962eb-72bc-42cb-b6b7-594f70d59436",
+    "ProductionStatus": 1,
+    "Temperature": 64.08351027843057,
+    "ProductionRate": 20,
+    "GoodCount": 140,
+    "BadCount": 18,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:24.2520000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:24.1800000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 1",
+    "WorkorderId": "ca8e018d-8970-4752-bef3-096b06397263",
+    "ProductionStatus": 1,
+    "Temperature": 91.4607585214484,
+    "ProductionRate": 40,
+    "GoodCount": 366,
+    "BadCount": 42,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:34.6750000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:34.5930000Z"
+    }
+  },
+  {
+    "DeviceName": "Device 2",
+    "WorkorderId": "95da16a9-e3e0-4606-87e7-a6e5f4cd5244",
+    "ProductionStatus": 1,
+    "Temperature": 74.87072693445903,
+    "ProductionRate": 30,
+    "GoodCount": 260,
+    "BadCount": 25,
+    "EventProcessedUtcTime": "2024-05-10T11:31:36.9505163Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2024-05-10T11:28:34.8940000Z",
+    "IoTHub": {
+      "MessageId": null,
+      "CorrelationId": null,
+      "ConnectionDeviceId": "test_device",
+      "ConnectionDeviceGenerationId": "638462810443678385",
+      "EnqueuedTime": "2024-05-10T11:28:34.8220000Z"
+    }
+  }
+]
