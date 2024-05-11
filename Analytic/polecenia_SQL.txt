@@ -38,6 +38,6 @@ INTO
 FROM
     [hubZajecia]
 WHERE  
-    DeviceErrors IS NOT  null
+    DeviceErrors IS NOT  null and DeviceErrors != 0 
 GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
 HAVING COUNT(DeviceErrors)>3; 
