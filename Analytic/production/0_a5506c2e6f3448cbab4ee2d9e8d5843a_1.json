@@ -1,0 +1,6 @@
+{"DeviceName":"Device 2","windowEndTime":"2024-05-10T12:20:00.0000000Z","good":2205.0,"bad":266.0,"% of good production":89.23512747875354}
+{"DeviceName":"Device 3","windowEndTime":"2024-05-10T12:20:00.0000000Z","good":2649.0,"bad":377.0,"% of good production":87.54130865829478}
+{"DeviceName":"Device 1","windowEndTime":"2024-05-10T12:20:00.0000000Z","good":2787.0,"bad":285.0,"% of good production":90.72265625}
+{"DeviceName":"Device 2","windowEndTime":"2024-05-10T12:25:00.0000000Z","good":12451.0,"bad":1287.0,"% of good production":90.63182413742904}
+{"DeviceName":"Device 3","windowEndTime":"2024-05-10T12:25:00.0000000Z","good":16467.0,"bad":2211.0,"% of good production":88.16254416961131}
+{"DeviceName":"Device 1","windowEndTime":"2024-05-10T12:25:00.0000000Z","good":17242.0,"bad":1545.0,"% of good production":91.77622824293394}

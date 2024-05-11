@@ -1,0 +1,43 @@
+/*
+1. Production KPIs 
+Procent dobrej produkcji w 5 min odstępach pogrupowane wedle urządzenia
+*/
+SELECT
+   DeviceName ,   System.Timestamp() as windowEndTime , SUM(GoodCount)*100/(SUM(GoodCount) + SUM(BadCount))
+    AS "% of good production"
+INTO
+    [production]
+FROM
+    [hubZajecia]
+GROUP BY TumblingWindow(minute, 5 ) , DeviceName ; 
+
+
+/*
+2. Temperatura
+średnia, minimalna, maksymalna temperatura z ostatnich 5 min ,pogrupowana wedle urządzania, co 1 minutę , 
+*/
+SELECT
+    DeviceName , System.Timestamp() as windowEndTime ,MAX(Temperature) as max , MIN(Temperature) as min, AVG(Temperature) as avg 
+INTO
+    [temperature]
+FROM
+    [hubZajecia]
+GROUP BY HoppingWindow(minute,5,1), DeviceName ; 
+
+
+
+/* 
+3. Błędy 
+Informacje o sytuacjach gdy naurządzeniu w ciągu minuty wystąpią więcewj niż 3 błędy.
+*/ 
+
+SELECT
+     System.Timestamp() as windowEndTime   ,DeviceName  , COUNT(*) as suma_bledow 
+INTO
+    [deviceerrors]
+FROM
+    [hubZajecia]
+WHERE  
+    DeviceErrors IS NOT  null and DeviceErrors != 0 
+GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
+HAVING COUNT(DeviceErrors)>3; 
