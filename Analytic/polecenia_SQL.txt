@@ -41,3 +41,41 @@ WHERE
     DeviceErrors IS NOT  null and DeviceErrors != 0 
 GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
 HAVING COUNT(DeviceErrors)>3; 
+
+
+/* 
+4. Błędy do logiki biznesowej
+Informacje o sytuacjach gdy naurządzeniu w ciągu minuty wystąpią więcewj niż 3 błędy.
+*/ 
+SELECT
+     System.Timestamp() as windowEndTime   ,DeviceName  , COUNT(*) as liczba_bledow 
+INTO
+    [kolejka-3errors]
+FROM
+    [hubZajecia]
+WHERE  
+    DeviceErrors IS NOT  null and DeviceErrors != 0 
+GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
+HAVING COUNT(DeviceErrors)>3 ; 
+ 
+
+
+  /* 
+5. Produckcja do logiki biznesowej
+jak produkcja dobra ejest mniejsza niz 90%
+*/ 
+/*
+SELECT
+   DeviceName ,   System.Timestamp() as windowEndTime , SUM(GoodCount)*100/(SUM(GoodCount) + SUM(BadCount))
+    AS "% of good production"
+INTO
+    [production]
+FROM
+    [hubZajecia]
+GROUP BY TumblingWindow(minute, 5 ) , DeviceName 
+HAVING
+    SUM(GoodCount)*100/(SUM(GoodCount) + SUM(BadCount)) < 90; 
+
+
+*/
+
