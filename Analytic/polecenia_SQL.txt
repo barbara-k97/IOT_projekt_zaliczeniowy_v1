@@ -67,7 +67,7 @@ jak produkcja dobra ejest mniejsza niz 90%
  
 SELECT
    DeviceName ,   System.Timestamp() as windowEndTime , SUM(GoodCount)*100/(SUM(GoodCount) + SUM(BadCount))
-    AS "% of good production"
+    AS "productionDevice"
 INTO
     [kolejka-produkcja]
 FROM

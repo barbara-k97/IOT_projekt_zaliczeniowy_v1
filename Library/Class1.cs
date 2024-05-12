@@ -235,8 +235,9 @@ namespace Library
           #endregion Device Twin
 
 
+
           #region Direct Methods - ResetErrorStatus
-            public   async Task ResetError(string deviceName)
+          public async Task ResetError(string deviceName)
             {
                  Console.WriteLine($"\tMETHOD EXECUTED ResetErrorStatus FROM : {deviceName}");
                  OPC.CallMethod($"ns=2;s={deviceName}", $"ns=2;s={deviceName}/ResetErrorStatus");
