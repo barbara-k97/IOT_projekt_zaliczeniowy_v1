@@ -193,8 +193,6 @@ namespace Library
                          {
                               Console.WriteLine("Blad podczas zmiany wartosci bledu", device_production);
                          }
-
-
                     }
                     else
                     {
