@@ -10,6 +10,8 @@ using System.Net.Sockets;
 using Newtonsoft.Json.Linq;
 using Microsoft.Azure.Amqp.Framing;
 using Opc.Ua;
+using Azure.Messaging.ServiceBus;
+using System.Diagnostics;
 
 
 namespace Library
@@ -81,7 +83,14 @@ namespace Library
 
                await UpdateTwinAsync(nameDevice, errorStatus, ProductionRate);
 
-
+               /*
+               // servisbus
+               Console.WriteLine("Uruchowanienie procesowania - ServisBus");
+               await processor.StartProcessingAsync();
+               Thread.Sleep(200); // 2 sekundy
+               Console.WriteLine("\n Stopping the receiver...");
+               await processor.StopProcessingAsync();
+               */
           }
           #endregion
 
@@ -282,6 +291,146 @@ namespace Library
                await client.SetMethodHandlerAsync("ResetErrorStatus", ResetErrorStatus, client);
                await client.SetMethodHandlerAsync("EmergencyStop", EmergencyStop, client);
 
+
+          }
+
+          #endregion
+
+
+
+          #region ServisBus - ERRORS 
+
+
+          public async Task Processor_ProcessMessageAsync(ProcessMessageEventArgs arg)
+          {
+               Console.WriteLine($"RECEIVED MESSAGE:\n\t{arg.Message.Body}");
+               var message = Encoding.UTF8.GetString(arg.Message.Body);
+               ReadMessage mesg = JsonConvert.DeserializeObject<ReadMessage>(message);
+
+
+
+               Console.WriteLine(mesg.windowEndTime);
+               Console.WriteLine(mesg.DeviceName);
+ 
+
+
+               Console.WriteLine("! ___________________ Zgłoszono wywyłanie metody EmergencyStop ");
+
+
+               string deviceId = mesg.DeviceName;
+               OPC.CallMethod($"ns=2;s={deviceId}", $"ns=2;s={deviceId}/EmergencyStop");
+
+
+               Console.WriteLine("!__________________________________________________________");
+
+
+               /*
+               Console.WriteLine("!_________ Zgłoszono wywyłanie metody ProductionDecrease");
+
+               OpcValue ProductionRate = client.ReadNode("ns=2;s=" + deviceId + "/ProductionRate");
+               int production = (int)ProductionRate.Value;
+               int low_production = production - 10;
+               Console.WriteLine($" produkcja obecna {production} , zmniejszona {low_production} ");
+
+               OpcStatus result = client.WriteNode("ns=2;s=" + deviceId + "/ProductionRate", low_production);
+
+
+               Console.WriteLine("!__________________________________________________");
+               */
+
+
+               /* string methodName = "EmergencyStop";
+
+                ServiceClient serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+
+                CloudToDeviceMethod method = new CloudToDeviceMethod(methodName);
+                method.ResponseTimeout = TimeSpan.FromSeconds(30);
+                CloudToDeviceMethodResult response = await serviceClient.InvokeDeviceMethodAsync(deviceId, method);
+                Console.WriteLine($"Response status: {response.Status}, payload:\n\t{response.GetPayloadAsJson()}");
+               */
+
+          }
+
+          public Task Processor_ProcessErrorAsync(ProcessErrorEventArgs arg)
+          {
+               Console.WriteLine(arg.Exception.ToString());
+
+               return Task.CompletedTask;
+          }
+          #endregion
+
+
+          #region ServisBus - RODUCTION 
+
+
+          public async Task Processor_ProcessMessageAsync2(ProcessMessageEventArgs arg)
+          {
+               Console.WriteLine($"RECEIVED MESSAGE:\n\t{arg.Message.Body}");
+               var message = Encoding.UTF8.GetString(arg.Message.Body);
+               ReadMessage mesg = JsonConvert.DeserializeObject<ReadMessage>(message);
+
+
+               Console.WriteLine(mesg.windowEndTime);
+               Console.WriteLine(mesg.DeviceName);
+               Console.WriteLine(mesg.productionDevice);
+
+
+               Console.WriteLine("! ___________________ Zgłoszono wywyłanie metody ProductionDecrease ");
+
+
+             
+
+
+               Console.WriteLine("!__________________________________________________________");
+
+
+               /*
+               Console.WriteLine("!_________ Zgłoszono wywyłanie metody ProductionDecrease");
+
+               OpcValue ProductionRate = client.ReadNode("ns=2;s=" + deviceId + "/ProductionRate");
+               int production = (int)ProductionRate.Value;
+               int low_production = production - 10;
+               Console.WriteLine($" produkcja obecna {production} , zmniejszona {low_production} ");
+
+               OpcStatus result = client.WriteNode("ns=2;s=" + deviceId + "/ProductionRate", low_production);
+
+
+               Console.WriteLine("!__________________________________________________");
+               */
+
+
+               /* string methodName = "EmergencyStop";
+
+                ServiceClient serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+
+                CloudToDeviceMethod method = new CloudToDeviceMethod(methodName);
+                method.ResponseTimeout = TimeSpan.FromSeconds(30);
+                CloudToDeviceMethodResult response = await serviceClient.InvokeDeviceMethodAsync(deviceId, method);
+                Console.WriteLine($"Response status: {response.Status}, payload:\n\t{response.GetPayloadAsJson()}");
+               */
+
+          }
+
+          public Task Processor_ProcessErrorAsync2(ProcessErrorEventArgs arg)
+          {
+               Console.WriteLine(arg.Exception.ToString());
+
+               return Task.CompletedTask;
+          }
+          #endregion 
+
+
+
+
+
+
+          #region ReadMessage - region 
+          public class ReadMessage
+          {
+               public DateTime windowEndTime { get; set; }
+               public string DeviceName { get; set; }
+
+               public string productionDevice { get; set; }
 
           }
 

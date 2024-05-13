@@ -8,6 +8,8 @@ using Microsoft.Azure.Devices.Client;
 using Opc.UaFx;
 using Opc.UaFx.Client;
 using Library;
+using Azure.Messaging.ServiceBus;
+using System.Diagnostics;
 
 class Program
 {
@@ -35,6 +37,11 @@ class Program
           Console.WriteLine("Podaj sciezke URL do serwera OPC UA  : ");
           string adresServerOPC = Console.ReadLine() ?? string.Empty;
 
+          // Ścieżka do Servisbus
+          const string sbConnectionString = "Endpoint=sb://servicebusme.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=B38lJY8ysnP3BaR0jXmULPQvjE5NSL2Jf+ASbH4HFU4=\r\n";
+          const string queueName = "kolejka-produkcja";
+          const string queueName2 = "kolejka-3errors";
+
 
           using (var client = new OpcClient(adresServerOPC))
           {
@@ -47,12 +54,21 @@ class Program
                var device = new Class1(deviceClient, client);
                await device.InitializeHandlers();
 
+               // SERVISBUS wywołanie
+               await using ServiceBusClient client_servisbus = new ServiceBusClient(sbConnectionString);
+               await using ServiceBusProcessor processor = client_servisbus.CreateProcessor(queueName);
+               processor.ProcessMessageAsync += device.Processor_ProcessMessageAsync;
+               processor.ProcessErrorAsync += device.Processor_ProcessErrorAsync;
+               await using ServiceBusProcessor processor2 = client_servisbus.CreateProcessor(queueName2);
+               processor2.ProcessMessageAsync += device.Processor_ProcessMessageAsync2;
+               processor2.ProcessErrorAsync += device.Processor_ProcessErrorAsync2;
+
                while (devicesList.Count> 0 )
                {
 
                     //lista commands
                     List<OpcReadNode> commands = new List<OpcReadNode>();
-                    Console.WriteLine("---------");
+                    Console.WriteLine("------------------------------------");
 
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
                     foreach (string deviceName in devicesList)
@@ -97,7 +113,19 @@ class Program
                          Console.WriteLine("___________________");
                          await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value, 
                               GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
-                  
+
+                         // servisbus
+                         Console.WriteLine("Uruchowanienie procesowania - ServisBus");
+                         await processor.StartProcessingAsync();
+                         await processor2.StartProcessingAsync();
+
+                         Thread.Sleep(200); // 0.2sekundy 
+                         Console.WriteLine("\n Stopping the receiver...");
+                         await processor.StopProcessingAsync();
+                         await processor2.StopProcessingAsync();
+
+
+
                          Console.WriteLine("___________________");
                     }
                     
