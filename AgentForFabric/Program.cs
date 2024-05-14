@@ -10,6 +10,7 @@ using Opc.UaFx.Client;
 using Library;
 using Azure.Messaging.ServiceBus;
 using System.Diagnostics;
+using Microsoft.Azure.Devices;
 
 class Program
 {
@@ -25,7 +26,7 @@ class Program
           // String do połączenia z Azure wpisane 
           Console.WriteLine("Wpisz string do połączenia z Azure  : ");
           string deviceConnectionString = Console.ReadLine() ?? string.Empty;
-          using var deviceClient = DeviceClient.CreateFromConnectionString(deviceConnectionString, TransportType.Mqtt);
+          using var deviceClient = DeviceClient.CreateFromConnectionString(deviceConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
           await deviceClient.OpenAsync();
           Console.WriteLine(" !!!          Łączenie z Azure zakończone sukcesem !");
 
@@ -39,8 +40,13 @@ class Program
 
           // Ścieżka do Servisbus
           const string sbConnectionString = "Endpoint=sb://servicebusme.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=B38lJY8ysnP3BaR0jXmULPQvjE5NSL2Jf+ASbH4HFU4=\r\n";
-          const string queueName = "kolejka-produkcja";
-          const string queueName2 = "kolejka-3errors";
+          const string queueName2 = "kolejka-produkcja";
+          const string queueName = "kolejka-3errors";
+
+          // podaj nazwe Devices chodzi o nazwe 
+          Console.WriteLine("Podaj nazwe device  IOT hub : ");
+          //string nazwaIOThub = Console.ReadLine() ?? string.Empty;
+          string nazwaIOThub = "test_device"; 
 
 
           using (var client = new OpcClient(adresServerOPC))
@@ -51,7 +57,11 @@ class Program
                var node = client.BrowseNode(OpcObjectTypes.ObjectsFolder);
                List<String> devicesList = ReadDeviceFromSimulator(node);
 
-               var device = new Class1(deviceClient, client);
+               using var registryManager = RegistryManager.CreateFromConnectionString("HostName=hubZajecia.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=EKjQ0KYoBKOWdNaXFfXyV743DqSulkYNpAIoTENtJj8=");
+
+
+
+               var device = new Class1(deviceClient, client , registryManager);
                await device.InitializeHandlers();
 
                // SERVISBUS wywołanie
@@ -117,12 +127,15 @@ class Program
                          // servisbus
                          Console.WriteLine("Uruchowanienie procesowania - ServisBus");
                          await processor.StartProcessingAsync();
-                         await processor2.StartProcessingAsync();
+                         Thread.Sleep(200); // 0.2sekundy
+                          await processor.StopProcessingAsync();
 
-                         Thread.Sleep(200); // 0.2sekundy 
-                         Console.WriteLine("\n Stopping the receiver...");
-                         await processor.StopProcessingAsync();
+                         await processor2.StartProcessingAsync();
+                         Thread.Sleep(200); // 0.2sekundy
                          await processor2.StopProcessingAsync();
+                         Console.WriteLine("\n Stopping the receiver...");
+                        
+                         
 
 
 
@@ -178,8 +191,10 @@ class Program
           {
                if (childNode.DisplayName.Value.Contains("Device "))
                {
-                    Console.WriteLine("  Device:" + childNode.DisplayName.Value);
+                    Console.WriteLine("############  Device:" + childNode.DisplayName.Value);
                     deviceNames.Add(childNode.DisplayName.Value);
+
+
                }
                ReadDeviceFromSimulator(childNode, numberDevice);
           }

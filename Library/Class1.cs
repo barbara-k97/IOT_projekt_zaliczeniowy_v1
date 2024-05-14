@@ -12,6 +12,13 @@ using Microsoft.Azure.Amqp.Framing;
 using Opc.Ua;
 using Azure.Messaging.ServiceBus;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Azure.Devices;
+using Microsoft.Rest;
+using Message = Microsoft.Azure.Devices.Client.Message;
+
+
+
 
 
 namespace Library
@@ -20,12 +27,14 @@ namespace Library
      {
           private DeviceClient client;
           private OpcClient OPC;
+          private RegistryManager registry;
 
 
-          public Class1(DeviceClient deviceClient, OpcClient OPC)
+          public Class1(DeviceClient deviceClient, OpcClient OPC , RegistryManager registry)
           {
                this.client = deviceClient;
                this.OPC = OPC;
+               this.registry = registry;
           }
  
 
@@ -81,16 +90,8 @@ namespace Library
                     await SendMessageToIOT(selectedData);
                }
 
-               await UpdateTwinAsync(nameDevice, errorStatus, ProductionRate);
-
-               /*
-               // servisbus
-               Console.WriteLine("Uruchowanienie procesowania - ServisBus");
-               await processor.StartProcessingAsync();
-               Thread.Sleep(200); // 2 sekundy
-               Console.WriteLine("\n Stopping the receiver...");
-               await processor.StopProcessingAsync();
-               */
+               await UpdateTwinAsync(DeviceName, errorStatus, ProductionRate);
+ 
           }
           #endregion
 
@@ -127,11 +128,10 @@ namespace Library
 
                //nazwy do JSON
                var device_error = name + "_numer_bledu";
-               var device_production = name + "_production_procent";
                // wartosci 
                var device_error_count = deviceError;
-               var device_production_count = prodRate;
-               
+
+
 
 
                // OBSŁUGA ZMAINY BLEDU 
@@ -182,11 +182,36 @@ namespace Library
 
                // OBSŁUGA ZMAINY % PRODUKCJI  
                // Jeśli już taki wpis istnieje
+               //desired = oczekiwana
+                
+               // nazwa 
+               var device_production = name + "_production_procent";
+               // wartosci 
+               var device_production_count = prodRate;
+
+               if (desiredProp.Contains(device_production))
+               {
+                    
+                    //nazwy do JSON
+                    var device_name = name + "_production_procent";
+                   
+                         int production_rate;
+                         if (int.TryParse((string)desiredProp[device_name], out production_rate))
+                         {
+                              OpcStatus status = OPC.WriteNode($"ns=2;s={deviceName}/ProductionRate", production_rate);
+                         }
+
+ 
+
+
+               }
+
+
                if (reportedProp.Contains(device_production))
                {
-                    var errorInTgisMoment = reportedProp[device_production];
+                    var productionInThisMoment = reportedProp[device_production];
                     // jak błąd jest inny
-                    if (errorInTgisMoment != device_production_count)
+                    if (productionInThisMoment != device_production_count)
                     {
 
                          // zmienił się błąd , trzeba wyświeylić informacje
@@ -245,6 +270,8 @@ namespace Library
 
 
 
+
+
           #region Direct Methods - ResetErrorStatus
           public async Task ResetError(string deviceName)
             {
@@ -287,7 +314,7 @@ namespace Library
           #region InitializeHandlers
           public async Task InitializeHandlers()
           {
-                
+               
                await client.SetMethodHandlerAsync("ResetErrorStatus", ResetErrorStatus, client);
                await client.SetMethodHandlerAsync("EmergencyStop", EmergencyStop, client);
 
@@ -312,15 +339,10 @@ namespace Library
                Console.WriteLine(mesg.windowEndTime);
                Console.WriteLine(mesg.DeviceName);
  
-
+               string deviceId = mesg.DeviceName;
 
                Console.WriteLine("! ___________________ Zgłoszono wywyłanie metody EmergencyStop ");
-
-
-               string deviceId = mesg.DeviceName;
                OPC.CallMethod($"ns=2;s={deviceId}", $"ns=2;s={deviceId}/EmergencyStop");
-
-
                Console.WriteLine("!__________________________________________________________");
 
 
@@ -360,11 +382,16 @@ namespace Library
           #endregion
 
 
-          #region ServisBus - RODUCTION 
+          #region ServisBus - PRODUCTION - ProductionDecrease
 
 
           public async Task Processor_ProcessMessageAsync2(ProcessMessageEventArgs arg)
           {
+               Console.WriteLine("Podaj nazwe device  IOT hub : ");
+               //string nazwaIOThub = Console.ReadLine() ?? string.Empty;
+               string nazwaIOThub = "test_device";
+
+
                Console.WriteLine($"RECEIVED MESSAGE:\n\t{arg.Message.Body}");
                var message = Encoding.UTF8.GetString(arg.Message.Body);
                ReadMessage mesg = JsonConvert.DeserializeObject<ReadMessage>(message);
@@ -375,39 +402,20 @@ namespace Library
                Console.WriteLine(mesg.productionDevice);
 
 
+
                Console.WriteLine("! ___________________ Zgłoszono wywyłanie metody ProductionDecrease ");
+              
+                
+
+               string deviceId = mesg.DeviceName;
 
 
-             
-
+               await ChangeProduction(nazwaIOThub , deviceId);
 
                Console.WriteLine("!__________________________________________________________");
 
 
-               /*
-               Console.WriteLine("!_________ Zgłoszono wywyłanie metody ProductionDecrease");
-
-               OpcValue ProductionRate = client.ReadNode("ns=2;s=" + deviceId + "/ProductionRate");
-               int production = (int)ProductionRate.Value;
-               int low_production = production - 10;
-               Console.WriteLine($" produkcja obecna {production} , zmniejszona {low_production} ");
-
-               OpcStatus result = client.WriteNode("ns=2;s=" + deviceId + "/ProductionRate", low_production);
-
-
-               Console.WriteLine("!__________________________________________________");
-               */
-
-
-               /* string methodName = "EmergencyStop";
-
-                ServiceClient serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
-
-                CloudToDeviceMethod method = new CloudToDeviceMethod(methodName);
-                method.ResponseTimeout = TimeSpan.FromSeconds(30);
-                CloudToDeviceMethodResult response = await serviceClient.InvokeDeviceMethodAsync(deviceId, method);
-                Console.WriteLine($"Response status: {response.Status}, payload:\n\t{response.GetPayloadAsJson()}");
-               */
+           
 
           }
 
@@ -417,10 +425,64 @@ namespace Library
 
                return Task.CompletedTask;
           }
-          #endregion 
+          #endregion
+
+
+          #region Change ProductionRate 
+          public async Task ChangeProduction(string nazwaIOThub , string deviceId)
+          { 
+               var twin = await registry.GetTwinAsync(nazwaIOThub);
+               string json = JsonConvert.SerializeObject(twin, Formatting.Indented);
+               JObject dana = JObject.Parse(json);
+
+               var reportedProp = twin.Properties.Reported;
+               var desiredProp = twin.Properties.Desired;         // desired - wartosc  oczekiwana na maszynie
+
+               //object nameDevice = data.name; 
+               var name = deviceId.Replace(" ", "");  // usuń spacje z nazwy 
+
+               //nazwy do JSON
+               var device_name = name + "_production_procent";
+               // wartosci 
+              
+               string desired_value_procent = (string)dana["properties"]["desired"][device_name];
+                
+               // pobrać dane z reported dla devcice name którego dostałam w wiadomosci , dla jego production rate 
+               string reported_value_procent = twin.Properties.Reported[device_name];
+               if (desiredProp.Contains(device_name))
+               {
+                    // jeśli taki wpis istnieje to 
+                    int desired_value = twin.Properties.Desired[device_name];
+                    // wartosc obniz
+                    int pom = desired_value - 10;
+                    
+                    // wyslac ponownie 
+                    desiredProp[device_name] = pom;
+                    // wywolanie by zrobiła się zmiana w Twin 
+                    await registry.UpdateTwinAsync(twin.DeviceId, twin, twin.ETag);     // zaktualizujemy (wyślemy) w Azure
+                    // zmiana na maszynie 
+                    OpcStatus status = OPC.WriteNode($"ns=2;s={deviceId}/ProductionRate", pom);
 
 
 
+               }
+               else
+               {
+                    // jak nie bedzie nazwy device 
+                    int reported_value_procent_new = twin.Properties.Reported[device_name];
+                    int pom = reported_value_procent_new - 10;
+                    
+                    desiredProp[device_name] = pom;
+                    await registry.UpdateTwinAsync(twin.DeviceId, twin, twin.ETag);     // zaktualizujemy (wyślemy) w Azure
+                    OpcStatus status = OPC.WriteNode($"ns=2;s={deviceId}/ProductionRate", pom);
+
+               }
+ 
+
+          }
+
+
+          #endregion
 
 
 
