@@ -17,22 +17,20 @@ GROUP BY TumblingWindow(minute, 5 ) , DeviceName ;
 średnia, minimalna, maksymalna temperatura z ostatnich 5 min ,pogrupowana wedle urządzania, co 1 minutę , 
 */
 SELECT
-    DeviceName , System.Timestamp() as windowEndTime ,MAX(Temperature) as max , MIN(Temperature) as min, AVG(Temperature) as avg 
+    DeviceName , System.Timestamp() as windowEndTime ,MAX(Temperature) as max , MIN(Temperature) as min, 
+    AVG(Temperature) as avg 
 INTO
     [temperature]
 FROM
     [hubZajecia]
 GROUP BY HoppingWindow(minute,5,1), DeviceName ; 
 
-
-
 /* 
 3. Błędy 
 Informacje o sytuacjach gdy naurządzeniu w ciągu minuty wystąpią więcewj niż 3 błędy.
 */ 
-
 SELECT
-     System.Timestamp() as windowEndTime   ,DeviceName  , COUNT(*) as suma_bledow 
+     System.Timestamp() as windowEndTime   ,DeviceName  , COUNT(*) as liczba_bledow 
 INTO
     [deviceerrors]
 FROM
@@ -40,10 +38,9 @@ FROM
 WHERE  
     DeviceErrors IS NOT  null and DeviceErrors != 0 
 GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
-HAVING COUNT(DeviceErrors)>3; 
-
-
-/* 
+HAVING COUNT(DeviceErrors)>3 ; 
+ 
+ /* 
 4. Błędy do logiki biznesowej
 Informacje o sytuacjach gdy naurządzeniu w ciągu minuty wystąpią więcewj niż 3 błędy.
 */ 
@@ -58,7 +55,6 @@ WHERE
 GROUP BY SlidingWindow(minute,1) , DeviceName  ,  liczba
 HAVING COUNT(DeviceErrors)>3 ; 
  
-
 
   /* 
 5. Produckcja do logiki biznesowej
