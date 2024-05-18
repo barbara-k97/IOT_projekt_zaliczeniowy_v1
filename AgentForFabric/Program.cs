@@ -8,51 +8,95 @@ using Microsoft.Azure.Devices.Client;
 using Opc.UaFx;
 using Opc.UaFx.Client;
 using Library;
+using Azure.Messaging.ServiceBus;
+using System.Diagnostics;
+using Microsoft.Azure.Devices;
+using Azure.Storage.Blobs.Models;
+using System.Diagnostics.CodeAnalysis;
 
 class Program
 {
      static async Task Main(string[] args)
      {
 
-          Console.WriteLine("Witaj w AgentForFabric ! ");
-          Console.WriteLine("-------------------------------------------------");
-
-
-          // AZURE podpięcie się do urządzenia w hubZajecia o nazwie test_device
+          Console.WriteLine("                      Witaj w AgentForFabric ! ");
+          Console.WriteLine("---------------------------------------------------------------------");
           Console.WriteLine(" !!!            ---  Łączenie z  Azure !");
           // String do połączenia z Azure wpisane 
-          Console.WriteLine("Wpisz string do połączenia z Azure  : ");
+          Console.WriteLine("!!!        Wpisz string do połączenia z Azure  : ");
           string deviceConnectionString = Console.ReadLine() ?? string.Empty;
-          using var deviceClient = DeviceClient.CreateFromConnectionString(deviceConnectionString, TransportType.Mqtt);
+          using var deviceClient = DeviceClient.CreateFromConnectionString(deviceConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
           await deviceClient.OpenAsync();
           Console.WriteLine(" !!!          Łączenie z Azure zakończone sukcesem !");
+          Console.WriteLine("---------------------------------------------------------------------");
 
-
-          // ŁĄCZENIE I POBIERANIE DANYCH Z OPC UA 
+          // ŁĄCZENIE Z OPC UA 
           // prośba o podanie ścieżki URL do serwera OPC UA 
           // opc.tcp://localhost:4840/
-
-          Console.WriteLine("Podaj sciezke URL do serwera OPC UA  : ");
+          Console.WriteLine("!!!        Podaj sciezke URL do serwera OPC UA  : ");
           string adresServerOPC = Console.ReadLine() ?? string.Empty;
+          Console.WriteLine("---------------------------------------------------------------------");
+
+          // Ścieżka do Servisbus
+          Console.WriteLine("!!!        Podaj string do ServisBus: ");
+          string sbConnectionString = Console.ReadLine() ?? string.Empty;
+          Console.WriteLine("---------------------------------------------------------------------");
+          // const string sbConnectionString = "Endpoint=sb://servicebusme.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=B38lJY8ysnP3BaR0jXmULPQvjE5NSL2Jf+ASbH4HFU4=\r\n";
+
+          Console.WriteLine("!!!        Podaj nazwę kolejki do obsługi produkcji: ");
+          string queueName2 = Console.ReadLine() ?? string.Empty;
+          // const string queueName2 = "kolejka-produkcja";
+          Console.WriteLine("---------------------------------------------------------------------");
+          Console.WriteLine("!!!        Podaj nazwę kolejki do obsługi błędów: ");
+          string queueName = Console.ReadLine() ?? string.Empty;
+          // const string queueName = "kolejka-3errors";
+          Console.WriteLine("---------------------------------------------------------------------");
+
+
+          Console.WriteLine("!!!        Podaj String do Registry Manager : ");
+          string registryString = Console.ReadLine() ?? string.Empty;
+  
+          Console.WriteLine("---------------------------------------------------------------------");
+          Console.WriteLine();
+
+          Console.WriteLine(" --------------- DZIĘUJĘ ZA PODANIE WSZYSTKICH DANYCH KONFIGURACYJNYCH --------------- ");
+          
 
 
           using (var client = new OpcClient(adresServerOPC))
           {
                client.Connect();
                Console.WriteLine("OPC UA Łączenie zakończone sukcesem !");
+               Console.WriteLine();
+               Console.WriteLine();
+               Console.WriteLine();
 
                var node = client.BrowseNode(OpcObjectTypes.ObjectsFolder);
                List<String> devicesList = ReadDeviceFromSimulator(node);
 
-               var device = new Class1(deviceClient, client);
+               using var registryManager = RegistryManager.CreateFromConnectionString(registryString);
+
+
+
+               var device = new Class1(deviceClient, client , registryManager);
                await device.InitializeHandlers();
+
+               // SERVISBUS wywołanie
+               await using ServiceBusClient client_servisbus = new ServiceBusClient(sbConnectionString);
+               await using ServiceBusProcessor processor = client_servisbus.CreateProcessor(queueName);
+               processor.ProcessMessageAsync += device.Processor_ProcessMessageAsync;
+               processor.ProcessErrorAsync += device.Processor_ProcessErrorAsync;
+               await using ServiceBusProcessor processor2 = client_servisbus.CreateProcessor(queueName2);
+               processor2.ProcessMessageAsync += device.Processor_ProcessMessageAsync2;
+               processor2.ProcessErrorAsync += device.Processor_ProcessErrorAsync2;
 
                while (devicesList.Count> 0 )
                {
 
                     //lista commands
                     List<OpcReadNode> commands = new List<OpcReadNode>();
-                    Console.WriteLine("---------");
+                    Console.WriteLine(" ");
+                    Console.WriteLine(" ");
 
                     // Tworzenie listy węzłów OPC na podstawie wczytanych nazw urządzeń
                     foreach (string deviceName in devicesList)
@@ -91,14 +135,23 @@ class Program
                               ProductionRate = ProductionRate.Value,
                               DeviceErrors = DeviceErrors.Value
                          };
-                          
-                         
-                        // Console.WriteLine(data);
-                         Console.WriteLine("___________________");
+                         //Console.WriteLine(data);
+                       
                          await device.SendTelemetry(deviceName, WorkorderId.Value, ProductionS.Value,  Temperature.Value,  ProductionRate.Value, 
                               GoodCount.Value,  BadCount.Value,  DeviceErrors.Value);
-                  
-                         Console.WriteLine("___________________");
+
+                         // servisbus
+                         //Console.WriteLine("Uruchowanienie procesowania - ServisBus");
+                         await processor.StartProcessingAsync();
+                         Thread.Sleep(200); // 0.2sekundy
+                          await processor.StopProcessingAsync();
+
+                         await processor2.StartProcessingAsync();
+                         Thread.Sleep(200); // 0.2sekundy
+                         await processor2.StopProcessingAsync();
+                         //Console.WriteLine("\n Stopping the receiver...");
+
+                         Console.WriteLine("**********************************");
                     }
                     
 
@@ -113,15 +166,16 @@ class Program
                     {
                          if (numer % 14 == 0)
                          {
-                              Console.WriteLine($" DEVICE {devicesList[numerUrzadzenia]}  ");
+                              Console.WriteLine($" DEVICE {devicesList[numerUrzadzenia]} ");
                               numerUrzadzenia++;
                          }
+
                          // wyswietla wartosc dla urzadzenia
                          Console.WriteLine(item.Value);
 
                          if ((numer + 1) % 14 == 0)
                          {
-                              Console.WriteLine("___________________");
+                              Console.WriteLine("**********************************");
                          }
                          numer++;
                     }
@@ -138,9 +192,7 @@ class Program
      }
   
 
-     // LISTA DO POBRANIA NAZW DEVICE  I ILE ICH JEST  W SYMULATORXE 
-
-     //czytanie nazw Device z symulatora
+     // LISTA DO POBRANIA NAZW DEVICE W SYMULATORXE  I ICH LISTY
      static List<String> ReadDeviceFromSimulator(OpcNodeInfo node, int numberDevice = 0)
      {
           List<String> deviceNames = new List<String>();
@@ -150,8 +202,10 @@ class Program
           {
                if (childNode.DisplayName.Value.Contains("Device "))
                {
-                    Console.WriteLine("  Device:" + childNode.DisplayName.Value);
+                    Console.WriteLine("############  Device:" + childNode.DisplayName.Value);
                     deviceNames.Add(childNode.DisplayName.Value);
+
+
                }
                ReadDeviceFromSimulator(childNode, numberDevice);
           }
